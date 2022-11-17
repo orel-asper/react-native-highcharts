@@ -10,7 +10,6 @@ const win = Dimensions.get('window');
 class ChartWeb extends Component {
     constructor(props) {
         super(props);
-        console.log(props, 'highchart-react-native-props')
         this.state = {
             init: `<html>
                     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
