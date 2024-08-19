@@ -1,20 +1,64 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { WebView } from 'react-native-webview';
-import exportingScript from './exporting';
-import  highstockScript from './highstock'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const win = Dimensions.get('window');
+
+const CDN_URLS = {
+    highstock: 'https://code.highcharts.com/stock/highstock.js',
+    exporting: 'https://code.highcharts.com/modules/exporting.js'
+};
 
 class ChartWeb extends Component {
     constructor(props) {
         super(props);
         this.state = {
             height: win.height,
-            width: win.width
+            width: win.width,
+            highstockScript: '',
+            exportingScript: '',
+            isLoading: true
         };
     }
 
+    async componentDidMount() {
+        await this.loadScripts();
+    }
+
+    loadScripts = async () => {
+        try {
+            let highstockScript = await AsyncStorage.getItem('highstockScript');
+            let exportingScript = await AsyncStorage.getItem('exportingScript');
+
+            if (!highstockScript) {
+                highstockScript = await this.fetchScript(CDN_URLS.highstock);
+                await AsyncStorage.setItem('highstockScript', highstockScript);
+            }
+
+            if (!exportingScript) {
+                exportingScript = await this.fetchScript(CDN_URLS.exporting);
+                await AsyncStorage.setItem('exportingScript', exportingScript);
+            }
+
+            this.setState({
+                highstockScript,
+                exportingScript,
+                isLoading: false
+            });
+        } catch (error) {
+            console.error('Error loading scripts:', error);
+            this.setState({ isLoading: false });
+        }
+    };
+
+    fetchScript = async (url) => {
+        const response = await fetch(url);
+        return await response.text();
+    };
+
     getChartTemplate(config) {
+        const { highstockScript, exportingScript } = this.state;
         return `
             <!DOCTYPE html>
             <html>
@@ -138,6 +182,10 @@ class ChartWeb extends Component {
     }
 
     render() {
+        if (this.state.isLoading) {
+            return <View style={this.props.style}><Text>Loading...</Text></View>;
+        }
+
         const html = this.getChartTemplate(this.props.config);
 
         return (
