@@ -77,7 +77,6 @@ class ChartWeb extends Component {
                             position: absolute;
                             top: 0;
                             left: 0;
-                            font-family: 'OpenSansHebrew-Regular', sans-serif;
                             font-weight: 300;
                         }
                     </style>
@@ -91,7 +90,6 @@ class ChartWeb extends Component {
                         config.chart = {
                             ...config.chart,
                             style: {
-                                fontFamily: 'OpenSansHebrew-Regular',
                                 fontSize: '11px',
                                 fontWeight: '300'
                             }
@@ -99,7 +97,6 @@ class ChartWeb extends Component {
                         config.tooltip = {
                             ...config.tooltip,
                             style: {
-                                fontFamily: 'OpenSansHebrew-Regular',
                                 fontSize: '11px',
                                 fontWeight: '300'
                             },
@@ -148,7 +145,6 @@ class ChartWeb extends Component {
                             labels: {
                                 ...config.xAxis.labels,
                                 style: {
-                                    fontFamily: 'OpenSansHebrew-Regular',
                                     fontSize: '11px',
                                     fontWeight: '300'
                                 }
@@ -161,7 +157,6 @@ class ChartWeb extends Component {
                             labels: {
                                 ...config.yAxis.labels,
                                 style: {
-                                    fontFamily: 'OpenSansHebrew-Regular',
                                     fontSize: '11px',
                                     fontWeight: '300'
                                 }
